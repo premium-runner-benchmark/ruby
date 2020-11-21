@@ -30,8 +30,8 @@ jobs:
       - name: Install libraries
         run: |
           set -x
-          sudo -t apt-get update -q || :
-          sudo -t apt-get install --no-install-recommends -q -y build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev bison autoconf ruby
+          sudo apt-get update -q || :
+          sudo apt-get install --no-install-recommends -q -y build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev bison autoconf ruby
       #### Start stat collection
       - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
       - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
