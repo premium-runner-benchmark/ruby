@@ -4,24 +4,9 @@ jobs:
   make:
     strategy:
       matrix:
-        test_task: [ "check", "test-bundler-parallel", "test-bundled-gems", "test-all TESTS=--repeat-count=2", "leaked-globals" ]
-        os: [ubuntu-20.04, ubuntu-18.04, ubuntu-16.04]
-        debug: ["", "-DRUBY_DEBUG"]
-        exclude:
-          - test_task: test-bundler-parallel
-            os: ubuntu-16.04
-          - test_task: test-bundled-gems
-            os: ubuntu-16.04
-          - test_task: "test-all TESTS=--repeat-count=2"
-            os: ubuntu-16.04
-          - test_task: leaked-globals
-            os: ubuntu-16.04
-          - os: ubuntu-16.04
-            debug: -DRUBY_DEBUG
-          - test_task: "test-all TESTS=--repeat-count=2"
-            debug: -DRUBY_DEBUG
-          - test_task: leaked-globals
-            debug: -DRUBY_DEBUG
+        test_task: ["test-all TESTS=--repeat-count=2"]
+        os: [ds2v2]
+        debug: ["-DRUBY_DEBUG"]
       fail-fast: false
     env:
       GITPULLOPTIONS: --no-tags origin ${{github.ref}}
