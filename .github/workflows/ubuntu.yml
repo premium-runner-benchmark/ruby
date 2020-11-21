@@ -6,7 +6,6 @@ jobs:
       matrix:
         test_task: ["test-all TESTS=--repeat-count=2"]
         runner_type: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5large,n2s2,ubuntu-20.04]
-        os: [ds2v2]
         debug: ["-DRUBY_DEBUG"]
       fail-fast: false
     env:
@@ -19,7 +18,7 @@ jobs:
       ##########################
       GITPULLOPTIONS: --no-tags origin ${{github.ref}}
       RUBY_DEBUG: ci
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runner_type }}
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - run: mkdir -p build
