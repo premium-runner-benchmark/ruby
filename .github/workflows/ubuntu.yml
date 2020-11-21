@@ -9,7 +9,7 @@ jobs:
         runner_type: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,d2dsv4]
         #ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,d2dsv4
         #os: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5dlarge,n2s2,ubuntu-20.04]
-        #debug: ["-DRUBY_DEBUG"]
+        debug: ["-DRUBY_DEBUG"]
     
     env:
       #### For stat collection
