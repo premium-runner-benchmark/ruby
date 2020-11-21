@@ -5,10 +5,18 @@ jobs:
     strategy:
       matrix:
         test_task: ["test-all TESTS=--repeat-count=2"]
+        runner_type: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5large,n2s2,ubuntu-20.04]
         os: [ds2v2]
         debug: ["-DRUBY_DEBUG"]
       fail-fast: false
     env:
+      #### For stat collection
+      runId: ${{ matrix.runner_type }}-${{ github.workflow }}
+      artifactsDir: artifacts/${{ github.repository }}
+      iostatFile: artifacts/${{ github.repository }}/${{ matrix.runner_type }}-iostat.txt
+      vmstatFile: artifacts/${{ github.repository }}/${{ matrix.runner_type }}-vmstat.txt
+      timingFile: artifacts/${{ github.repository }}/${{ matrix.runner_type }}-timing.txt
+      ##########################
       GITPULLOPTIONS: --no-tags origin ${{github.ref}}
       RUBY_DEBUG: ci
     runs-on: ${{ matrix.os }}
@@ -66,8 +74,58 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SIMPLER_ALERTS_URL }} # ruby-lang slack: ruby/simpler-alerts-bot
         if: failure() && github.event_name == 'push'
 
+      #### Collect/upload stats
+      - run: date -R >> ${{ runner.temp }}/${{ env.timingFile }}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: perfdata
+          path: ${{ runner.temp }}/${{ env.artifactsDir }}
+          if-no-files-found: error
+      ##########################
+
+  process:
+    name: Process Perf Data
+    runs-on: ubuntu-latest
+    needs: [make]
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+          architecture: x64
+      - uses: actions/checkout@v2
+        with:
+          repository: pjquirk/runnerperf
+          path: runnerperf
+      - uses: actions/checkout@v2
+        with:
+          repository: pjquirk/iostat-tool
+          path: runnerperf/iostat-tool
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2  
+        with:
+          name: perfdata
+          path: runnerperf/data
+      - name: Prereqs
+        run: sudo apt -y install datamash  
+      - name: Process stats
+        run: |
+          cd runnerperf
+          (cd iostat-tool && python setup.py develop)
+          ls -l data
+          script/dumpcsv.sh data output
+          script/aggregate.sh output ${{ github.repository }}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: summary-perfdata
+          path: runnerperf/output/summary.csv
+          if-no-files-found: error
+
+
 defaults:
   run:
     working-directory: build
 
+  
 
