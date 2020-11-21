@@ -1,4 +1,4 @@
-name: Ubuntu
+name: ci
 on: [push, pull_request]
 jobs:
   make:
@@ -26,7 +26,6 @@ jobs:
     
     steps:
       #### Start stat collection
-      - run: ls
       - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
       - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
       - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
