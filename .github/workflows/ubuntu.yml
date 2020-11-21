@@ -25,15 +25,6 @@ jobs:
     #if: "!contains(github.event.head_commit.message, '[ci skip]')"
     
     steps:
-      - uses: actions/checkout@v2
-        with:
-          path: src
-      #### Start stat collection
-      - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
-      - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
-      - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
-      - run: date -R > ${{ runner.temp }}/${{ env.timingFile }}
-      ##########################
       - run: mkdir -p build
         working-directory:
       - name: Install libraries
@@ -41,8 +32,13 @@ jobs:
           set -x
           sudo apt-get update -q || :
           sudo apt-get install --no-install-recommends -q -y build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev bison autoconf ruby
-      - name: git config
-        run: |
+      #### Start stat collection
+      - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
+      - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
+      - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
+      - run: date -R > ${{ runner.temp }}/${{ env.timingFile }}
+      ##########################- name: git config
+      - run: |
           git config --global advice.detachedHead 0
       - uses: actions/checkout@v2
         with:
