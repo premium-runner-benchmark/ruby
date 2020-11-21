@@ -24,6 +24,12 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     
     steps:
+      #### Start stat collection
+      - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
+      - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
+      - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
+      - run: date -R > ${{ runner.temp }}/${{ env.timingFile }}
+      ##########################
       - run: mkdir -p build
         working-directory:
       - name: Install libraries
@@ -37,12 +43,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: src
-      #### Start stat collection
-      - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
-      - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
-      - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
-      - run: date -R > ${{ runner.temp }}/${{ env.timingFile }}
-      ##########################
       #- name: Fixed world writable dirs
       #  run: |
       #    chmod -v go-w $HOME $HOME/.config
