@@ -27,7 +27,7 @@ jobs:
     
     steps:
       - run: mkdir -p build
-        working-directory: build
+        working-directory:
       - name: Install libraries
         run: |
           set -x
