@@ -5,8 +5,8 @@ jobs:
     strategy:
       matrix:
         test_task: ["check"]
-        runner_type: [d2dsv4]
-        #ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,
+        runner_type: [d2asv4]
+        #ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,d2dsv4
         #os: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5dlarge,n2s2,ubuntu-20.04]
         debug: ["-DRUBY_DEBUG"]
       fail-fast: false
@@ -26,6 +26,7 @@ jobs:
     
     steps:
       #### Start stat collection
+      - run: ls
       - run: mkdir -p ${{ runner.temp }}/${{ env.artifactsDir }}
       - run: iostat -yxmt 1 > ${{ runner.temp }}/${{ env.iostatFile }} &
       - run: vmstat -n 1 > ${{ runner.temp }}/${{ env.vmstatFile }} &
