@@ -132,9 +132,9 @@ jobs:
           if-no-files-found: error
 
 
-#defaults:
-#  run:
-#    working-directory: build
+defaults:
+  run:
+    working-directory: build
 
   
 
