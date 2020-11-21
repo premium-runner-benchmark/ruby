@@ -1,5 +1,5 @@
 name: ci
-on: [push, pull_request]
+on: [push, pull_request,workflow_dispatch]
 jobs:
   make:
     runs-on: ${{ matrix.runner_type }}
@@ -26,7 +26,7 @@ jobs:
     
     steps:
       - run: mkdir -p build
-        working-directory:
+        working-directory: build
       - name: Install libraries
         run: |
           set -x
@@ -131,9 +131,9 @@ jobs:
           if-no-files-found: error
 
 
-defaults:
-  run:
-    working-directory: build
+#defaults:
+#  run:
+#    working-directory: build
 
   
 
