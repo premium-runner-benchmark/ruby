@@ -8,7 +8,7 @@ jobs:
       matrix:
         test_task: ["check"]
         #runner_type: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5dlarge,d2asv4,d2dsv4]
-        runner_type: [f2s,f4s]
+        runner_type: [n2s2]
         #ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,d2dsv4
         debug: ["-DRUBY_DEBUG"]
     defaults:
