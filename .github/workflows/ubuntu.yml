@@ -7,9 +7,7 @@ jobs:
     strategy:
       matrix:
         test_task: ["check"]
-        #runner_type: [ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,m5dlarge,d2asv4,d2dsv4]
-        runner_type: [n2s2]
-        #ds2v2,ds2v3,ds3v2,ds4v2,ds5v2,f32s,f64s,m5large,d2asv4,d2dsv4
+        runner_type: [ds2v2,ds2v3,d2dsv4,d2asv4,m5large,n2s2,ds3v2,ds4v2,ds5v2,f4s,c2s4,c5xlarge,f32s,f64s,ubuntu-20.04]
         debug: ["-DRUBY_DEBUG"]
     defaults:
       run:
